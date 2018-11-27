@@ -1,8 +1,11 @@
 {
   "name": "angular-utils-cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "Angular CLI Utils",
   "main": "index.js",
+  "bin": {
+    "ngutils": "./bin/ngutils"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,10 +13,14 @@
     "type": "git",
     "url": "git+https://github.com/github-vipera/angular-utils-cli.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Barco Bonati",
+  "license": "Vipera Commercial",
   "bugs": {
     "url": "https://github.com/github-vipera/angular-utils-cli/issues"
   },
-  "homepage": "https://github.com/github-vipera/angular-utils-cli#readme"
+  "homepage": "https://github.com/github-vipera/angular-utils-cli#readme",
+  "dependencies": {
+    "commander": "^2.19.0",
+    "figlet": "^1.2.1"
+  }
 }
