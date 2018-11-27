@@ -59,15 +59,17 @@ UpdateProjectVersionCommand.prototype.execute = function(args, program, callback
             },
         ])
         .then(answers => {
-            console.log(answers);
+            this.doProcess(answers, callback);
         });
-
-    //console.log(this.subProjects);
 
  
 }
 
-
+UpdateProjectVersionCommand.prototype.doProcess = function(params, callback) {
+    console.log('')
+    console.log("Current params:" , params);
+    console.log('')
+}
 
 // export the class
 module.exports = UpdateProjectVersionCommand;
