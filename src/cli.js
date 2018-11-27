@@ -1,10 +1,13 @@
 const figlet = require('figlet');
-const program = require('commander');
+var program = require('commander');
 const chalk = require('chalk');
 const path = require('path');
 
 const CLI_NAME = "Angular Utils CLI"
 const CLI_VERSION = require('../package').version;
+
+//Commands
+var UpdateProjectVersionCommand = require('./commands/UpdateProjectVersionCommand');
 
 module.exports = function (inputArgs, cb) {
 
@@ -23,7 +26,17 @@ function cli (inputArgs, cb) {
 
     console.log('');
     console.log(chalk.blue.bold("Angular Utils CLI - Vipera © 2018"));
-    console.log(chalk.blue("Version " , CLI_VERSION));
+    //console.log(chalk.blue("Version " , CLI_VERSION));
     console.log('');
 
-}
+    program
+        .version(CLI_VERSION)
+        .option('-v, --version', 'Current CLI Version')
+        .option('-u, --update [angularProject]', 'Update projects version of a specific [angularProject]')
+        .parse(inputArgs);
+
+        if (program.update) {
+            new UpdateProjectVersionCommand().execute(null,null,cb);
+            //console.log("program.update="+program.update)
+        }
+ }
