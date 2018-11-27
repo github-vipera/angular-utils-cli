@@ -30,11 +30,10 @@ function cli (inputArgs, cb) {
 
     program
         .version(CLI_VERSION)
-        .option('-v, --version', 'Current CLI Version')
-        .option('-u, --update [angularProject]', 'Update projects version of a specific [angularProject]')
+        .option('-s, --syncver [angularProject]', 'Update projects version to a specific [angularProject]')
         .parse(inputArgs);
 
-        if (program.update) {
+        if (program.syncver) {
             new UpdateProjectVersionCommand().execute(inputArgs, program ,cb);
         }
  }

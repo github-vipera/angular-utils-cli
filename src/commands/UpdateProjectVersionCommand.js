@@ -8,7 +8,7 @@ function UpdateProjectVersionCommand(){
 
 UpdateProjectVersionCommand.prototype.execute = function(args, program, callback) {
 
-    this.projectRoot = program.update;
+    this.projectRoot = program.syncver;
 
     console.log(chalk.bold("Parsing Angular project..."));
 
