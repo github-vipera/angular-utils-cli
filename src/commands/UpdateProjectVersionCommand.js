@@ -2,6 +2,8 @@ const chalk = require('chalk');
 const path = require('path');
 var inquirer = require('inquirer');
 const semver = require('semver')
+const fs = require("fs");
+const ora = require('ora');
 
 function UpdateProjectVersionCommand(){
 }
@@ -32,7 +34,12 @@ UpdateProjectVersionCommand.prototype.execute = function(args, program, callback
     for (var key in subProjects) {
         if (subProjects.hasOwnProperty(key)) {
             console.log("  " + chalk.green(key));
-            this.subProjects.push({ name: key });
+
+            let angularProject = this.angularProject.projects[key];
+            if (angularProject){
+                let prjPath = path.join(this.projectRoot, angularProject.root);
+                this.subProjects.push({ name: key, path: prjPath });
+            }
         }
     }
     console.log('');
@@ -66,9 +73,37 @@ UpdateProjectVersionCommand.prototype.execute = function(args, program, callback
 }
 
 UpdateProjectVersionCommand.prototype.doProcess = function(params, callback) {
-    console.log('')
+    console.log('');
     console.log("Current params:" , params);
-    console.log('')
+    console.log('');
+
+    this.updateJson(this.packageJsonFile, params.newVersion);
+
+    if (params.allSubProjects){
+        for (let i=0;i<this.subProjects.length;i++){
+            let jsonFile = path.join(this.subProjects[i].path, "package.json");
+            this.updateJson(jsonFile, params.newVersion);
+        }
+    }    
+}
+
+
+UpdateProjectVersionCommand.prototype.updateJson = function(fileName,version) {
+    
+    if (fs.existsSync(fileName)){
+        const spinner = ora('Processing file: ' + fileName).start();
+
+        //console.log("Processing file: "+ chalk.green(fileName)+"...");
+        let rawdata = fs.readFileSync(fileName);  
+        let packageJson = JSON.parse(rawdata);  
+        packageJson.version = version;
+    
+        let data = JSON.stringify(packageJson, null, 4);  
+        fs.writeFileSync(fileName, data);
+
+        spinner.succeed("Processed file: "+fileName);
+    }
+
 }
 
 // export the class
