@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const path = require('path');
 var inquirer = require('inquirer');
+const semver = require('semver')
 
 function UpdateProjectVersionCommand(){
 }
@@ -43,7 +44,7 @@ UpdateProjectVersionCommand.prototype.execute = function(args, program, callback
                 name: 'newver',
                 message: 'Current version is ' + chalk.bold.green(this.packageJson.version) + ' .What is the new version?',
                 validate: function(value) {
-                    var valid = (value && value!="");
+                    var valid = (semver.valid(value)!=undefined); 
                     return valid || 'Please enter a valid version';
                 },
                 filter: String
