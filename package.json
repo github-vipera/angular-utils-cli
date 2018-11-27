@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/github-vipera/angular-utils-cli#readme",
   "dependencies": {
+    "chalk": "^2.4.1",
     "commander": "^2.19.0",
-    "figlet": "^1.2.1"
+    "figlet": "^1.2.1",
+    "path": "^0.12.7"
   }
 }
