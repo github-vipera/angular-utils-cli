@@ -1,7 +1,6 @@
 const figlet = require('figlet');
 var program = require('commander');
 const chalk = require('chalk');
-const path = require('path');
 
 const CLI_NAME = "Angular Utils CLI"
 const CLI_VERSION = require('../package').version;
@@ -36,7 +35,6 @@ function cli (inputArgs, cb) {
         .parse(inputArgs);
 
         if (program.update) {
-            new UpdateProjectVersionCommand().execute(null,null,cb);
-            //console.log("program.update="+program.update)
+            new UpdateProjectVersionCommand().execute(inputArgs, program ,cb);
         }
  }
