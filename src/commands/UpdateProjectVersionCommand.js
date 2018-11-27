@@ -37,21 +37,29 @@ UpdateProjectVersionCommand.prototype.execute = function(args, program, callback
     }
     console.log('');
 
+    let defaultNewVer = semver.inc(this.packageJson.version, "patch");
+
     inquirer
         .prompt([
             {
                 type: 'input',
-                name: 'newver',
-                message: 'Current version is ' + chalk.bold.green(this.packageJson.version) + ' .What is the new version?',
+                name: 'newVersion',
+                message: 'Current version is ' + chalk.bold.green(this.packageJson.version) + '. Which new version do you want ?',
                 validate: function(value) {
                     var valid = (semver.valid(value)!=undefined); 
                     return valid || 'Please enter a valid version';
                 },
+                default: defaultNewVer,
                 filter: String
-            }
+            },
+            {
+                type: 'confirm',
+                name: 'allSubProjects',
+                message: 'do you want to synchronize all the subprojects ?'
+            },
         ])
         .then(answers => {
-            // Use user feedback for... whatever!!
+            console.log(answers);
         });
 
     //console.log(this.subProjects);
