@@ -4,73 +4,53 @@ var inquirer = require('inquirer');
 const semver = require('semver')
 const fs = require("fs");
 const ora = require('ora');
+const ProjectInfo = require('./ProjectInfo')
 
 function UpdateProjectVersionCommand(){
 }
 
-UpdateProjectVersionCommand.prototype.execute = function(args, program, callback) {
+/**
+ * Examples:
+ * ngutils updateVersion --v '1.0.1' -a -p ./
+ * ngutils updateVersion --v 'beta' -f -a -p ./
+ * ngutils updateVersion --semver 'patch' -a -p ./
+ */
+UpdateProjectVersionCommand.prototype.execute = function(args, callback) {
 
-    this.projectRoot = program.syncver;
-
-    console.log(chalk.bold("Parsing Angular project..."));
-
-    this.packageJsonFile = path.join(this.projectRoot, "package.json");
-    this.angularProjectFile = path.join(this.projectRoot, "angular.json");
-
-    console.log("Laoding file " + this.packageJsonFile);
-
-    this.packageJson = this.loadJson(this.packageJsonFile);
-    this.angularProject = this.loadJson(this.angularProjectFile);
+    let projectRoot = (args.p ? args.p : args.project);
+    this.projectInfo = new ProjectInfo();
+    this.projectInfo.loadInfo(projectRoot, true);
 
     console.log('');
-    console.log(chalk.bold("Root Project"));
-    console.log("  Name: " + chalk.green(this.packageJson.name));
-    console.log("  Version: " + chalk.green(this.packageJson.version));
-    console.log('');
-    console.log(chalk.bold("Angular sub-projects"));
 
-    this.subProjects = [];
-
-    let subProjects = this.angularProject.projects; 
-    for (var key in subProjects) {
-        if (subProjects.hasOwnProperty(key)) {
-            console.log("  " + chalk.green(key));
-
-            let angularProject = this.angularProject.projects[key];
-            if (angularProject){
-                let prjPath = path.join(this.projectRoot, angularProject.root);
-                this.subProjects.push({ name: key, path: prjPath });
-            }
-        }
+    let defaultNewVer = semver.inc(this.projectInfo.getPackageJson().version, "patch");
+    if (args.semver){
+        defaultNewVer = semver.inc(this.projectInfo.getPackageJson().version, args.semver);
+    } 
+    if (args.v){
+        defaultNewVer = args.v;
     }
-    console.log('');
 
-    let defaultNewVer = semver.inc(this.packageJson.version, "patch");
+    if (!args.f & !args.force){
+        if (!semver.valid(defaultNewVer)){
+            console.log(chalk.red("Invalid version '" +defaultNewVer+"': this is not compliant with the 'Semantic Version' standards."));
+            console.log(chalk.red("Use -f or --force option in order to use a not compliant version value."));
+            return;
+        } 
+    }
 
-    inquirer
-        .prompt([
-            {
-                type: 'input',
-                name: 'newVersion',
-                message: 'Current version is ' + chalk.bold.green(this.packageJson.version) + '. Which new version do you want ?',
-                validate: function(value) {
-                    var valid = (semver.valid(value)!=undefined); 
-                    return valid || 'Please enter a valid version';
-                },
-                default: defaultNewVer,
-                filter: String
-            },
-            {
-                type: 'confirm',
-                name: 'allSubProjects',
-                message: 'do you want to synchronize all the subprojects ?'
-            },
-        ])
-        .then(answers => {
-            this.doProcess(answers, callback);
-        });
+    let doAll = false;
+    if (args.a | args.all){
+        doAll = true;
+    }
 
- 
+    let params = {
+        newVersion: defaultNewVer,
+        allSubProjects: doAll
+    }
+
+    this.doProcess(params, callback);
+
 }
 
 UpdateProjectVersionCommand.prototype.doProcess = function(params, callback) {
@@ -78,14 +58,20 @@ UpdateProjectVersionCommand.prototype.doProcess = function(params, callback) {
     console.log("Current params:" , params);
     console.log('');
 
-    this.updateJson(this.packageJsonFile, params.newVersion);
+    this.updateJson(this.projectInfo.getPackageJsonFile(), params.newVersion);
+
+    let subprojects = this.projectInfo.getSubProjects();
 
     if (params.allSubProjects){
-        for (let i=0;i<this.subProjects.length;i++){
-            let jsonFile = path.join(this.subProjects[i].path, "package.json");
+        for (let i=0;i<subprojects.length;i++){
+            let jsonFile = path.join(subprojects[i].path, "package.json");
             this.updateJson(jsonFile, params.newVersion);
         }
     }    
+
+    console.log('');
+    console.log('New version: ', chalk.bold.green(params.newVersion));
+
 }
 
 
