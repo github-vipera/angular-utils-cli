@@ -8,6 +8,10 @@ var ProjectInfo = require('./ProjectInfo')
 function BuildProjectsCommand(){
 }
 
+/**
+ * Examples:
+ * ngutils build --prod 
+ */
 BuildProjectsCommand.prototype.execute = function(args, program, rootFolder, release, callback) {
 
     console.log(chalk.bold("Building projects..."));

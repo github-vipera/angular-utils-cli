@@ -38,14 +38,25 @@ function cli (inputArgs, cb) {
     const argv = require('yargs')
         .command('info', 'Display informations about this tool')    
         .command('getVersion', 'Get current Angular project version')
-            .option('project', {
-                alias: 'p'
-            })
         .command('updateVersion', 'Update current Angular project version')
-            .option('project', {
-                alias: 'p'
-            })
-        .argv
+        .command('build', 'Build current Angular project')
+        .option('project', {
+            alias: 'p',
+            describe: 'The root project folder' 
+        })
+        .option('all', {
+            alias: 'a',
+            describe: 'Apply the command to all subprojects' 
+        })
+        .option('force', {
+            alias: 'f',
+            describe: 'Force the execution of the command although the validation of some parameters fails' 
+        })
+        .option('prod', {
+            describe: 'Build with Angular "prod" switch' 
+        })
+        .demandOption(['project'], 'Please provide the project path argument to work with this tool')
+    .argv
     
     //console.log(argv);
 
@@ -79,11 +90,14 @@ function cli (inputArgs, cb) {
     }
 
     //Examples:
-    // Build main project in release mode from ./
-    // ngutils build --release -p ./
+    // Build main project in prod mode from ./
+    // ngutils build --prod -p ./
     //
-    // Build all projects in release mode from ./
-    // ngutils build --release -a -p ./
+    // Build all projects in prod mode from ./
+    // ngutils build --prod -a -p ./
+    //
+    // Build all projects from ./
+    // ngutils build -a -p ./
     //
     // Update all projects deps from ./
     // ngutils updateVersion --semver minor -a -p ./
