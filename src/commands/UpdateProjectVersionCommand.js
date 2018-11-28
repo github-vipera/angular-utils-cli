@@ -14,12 +14,13 @@ UpdateProjectVersionCommand.prototype.execute = function(args, program, callback
 
     console.log(chalk.bold("Parsing Angular project..."));
 
-
     this.packageJsonFile = path.join(this.projectRoot, "package.json");
     this.angularProjectFile = path.join(this.projectRoot, "angular.json");
 
-    this.packageJson = require(this.packageJsonFile);
-    this.angularProject = require(this.angularProjectFile);
+    console.log("Laoding file " + this.packageJsonFile);
+
+    this.packageJson = this.loadJson(this.packageJsonFile);
+    this.angularProject = this.loadJson(this.angularProjectFile);
 
     console.log('');
     console.log(chalk.bold("Root Project"));
@@ -92,19 +93,27 @@ UpdateProjectVersionCommand.prototype.updateJson = function(fileName,version) {
     
     if (fs.existsSync(fileName)){
         const spinner = ora('Processing file: ' + fileName).start();
-
-        //console.log("Processing file: "+ chalk.green(fileName)+"...");
-        let rawdata = fs.readFileSync(fileName);  
-        let packageJson = JSON.parse(rawdata);  
+        
+        let packageJson = this.loadJson(fileName);
         packageJson.version = version;
-    
-        let data = JSON.stringify(packageJson, null, 4);  
-        fs.writeFileSync(fileName, data);
+        this.writeJson(packageJson, fileName);
 
         spinner.succeed("Processed file: "+fileName);
     }
 
 }
+
+UpdateProjectVersionCommand.prototype.loadJson = function(fileName) {
+    let rawdata = fs.readFileSync(fileName);  
+    let packageJson = JSON.parse(rawdata);  
+    return packageJson;
+}
+
+UpdateProjectVersionCommand.prototype.writeJson = function(jsonObject, fileName) {
+    let data = JSON.stringify(jsonObject, null, 4);  
+    fs.writeFileSync(fileName, data);
+}
+
 
 // export the class
 module.exports = UpdateProjectVersionCommand;
