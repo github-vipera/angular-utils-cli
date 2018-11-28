@@ -1,6 +1,7 @@
 const figlet = require('figlet');
 var program = require('commander');
 const chalk = require('chalk');
+var CommandExecutor = require('./commons/CommandExecutor');
 
 const CLI_NAME = "Angular Utils CLI"
 const CLI_VERSION = require('../package').version;
@@ -10,30 +11,46 @@ var UpdateProjectVersionCommand = require('./commands/UpdateProjectVersionComman
 var BuildProjectsCommand = require('./commands/BuildProjectsCommand');
 var GetVersionCommand = require("./commands/GetVersionCommand");
 var InfoCommand = require('./commands/InfoCommand');
+var BuildProjectsCommand = require('./commands/BuildProjectsCommand');
 
 module.exports = function (inputArgs, cb) {
-
-    cli(inputArgs, cb);
+   
     /*
-    figlet(CLI_NAME, function(err, data) {
-        if (err) {
-            console.log('Something went wrong...');
-            console.dir(err);
-            return;
+   console.log("Started!!")
+
+   let runner = new CommandExecutor().create("pwd", "../");
+   
+   runner().then(()=>{
+    console.log("Done!")
+   }, (error)=>{
+    console.log("Error:", error)
+   });
+   */
+    
+    cli(inputArgs, cb);
+}
+
+async function test(){
+    const run = async () => {
+        let out;
+        
+        try {
+          out = await execShPromise('ng build', true);
+        } catch (e) {
+          console.log('Error: ', e);
+          console.log('Stderr: ', e.stderr);
+          console.log('Stdout: ', e.stdout);
+          
+          return e;
         }
-        console.log(data)
-        cli(inputArgs, cb);
-    });
-    */
+        
+        console.log('out: ', out.stdout, out.stderr);
+      }
+      return run();
 }
 
 function cli (inputArgs, cb) {
 
-    /*
-    console.log('');
-    console.log(chalk.blue.bold("Angular Utils CLI - Vipera © 2018"));
-    console.log('');
-    */
 
     const argv = require('yargs')
         .command('info', 'Display informations about this tool')    
@@ -86,7 +103,7 @@ function cli (inputArgs, cb) {
         return new UpdateProjectVersionCommand().execute(argv, cb);
     }
     else if (command === 'build'){
-        console.log(chalk.yellow.bold(command + " not yet implemented."));
+        return new BuildProjectsCommand().execute(argv, cb);
         return;
     }
     else if (command === 'dist'){

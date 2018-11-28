@@ -46,7 +46,9 @@ ProjectInfo.prototype.loadInfo = function(projectRoot, verbose) {
             let angularProject = this.angularProject.projects[key];
             if (angularProject){
                 let prjPath = path.join(this.projectRoot, angularProject.root);
-                this.subProjects.push({ name: key, path: prjPath });
+                if (this.isAngularProject(prjPath)){
+                    this.subProjects.push({ name: key, path: prjPath });
+                }
             }
         }
     }
@@ -54,6 +56,12 @@ ProjectInfo.prototype.loadInfo = function(projectRoot, verbose) {
         console.log('');
     }
 
+}
+
+ProjectInfo.prototype.isAngularProject = function(prjPath) {
+    let packageJsonFile = path.join(prjPath, "package.json");
+    let ngPackageJsonFile = path.join(prjPath, "ng-package.json");
+    return (fs.existsSync(packageJsonFile) && fs.existsSync(ngPackageJsonFile));
 }
 
 ProjectInfo.prototype.getProjectRoot = function() {
