@@ -52,8 +52,10 @@ function cli (inputArgs, cb) {
     let command = argv._[0];    
 
     if (!command){
+        console.log('');
         console.log(chalk.red.bold("No command specified. Type 'ngutils help' to see all options."));
         console.log('');
+        new InfoCommand().execute(argv, cb);
         return;
     }
 
