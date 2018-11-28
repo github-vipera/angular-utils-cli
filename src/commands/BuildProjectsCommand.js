@@ -31,6 +31,10 @@ BuildProjectsCommand.prototype.execute = function(args, callback) {
             tasks.push(buildTask.getRunner());
         }
 
+        //add the root project
+        let buildTask = new BuildProjectTask( "Root Project", this.projectInfo.getProjectRoot());
+        tasks.push(buildTask.getRunner());
+
         console.log(chalk.bold.gray("Building all project..."));
 
         serialExec(tasks).then(console.log);
