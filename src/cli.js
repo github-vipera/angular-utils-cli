@@ -86,7 +86,11 @@ function cli (inputArgs, cb) {
         return new UpdateProjectVersionCommand().execute(argv, cb);
     }
     else if (command === 'build'){
-        //TODO!!
+        console.log(chalk.yellow.bold(command + " not yet implemented."));
+        return;
+    }
+    else if (command === 'dist'){
+        console.log(chalk.yellow.bold(command + " not yet implemented."));
         return;
     }
     else {
