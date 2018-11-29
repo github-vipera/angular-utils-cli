@@ -2,7 +2,9 @@ const figlet = require('figlet');
 var program = require('commander');
 const chalk = require('chalk');
 var CommandExecutor = require('./commons/CommandExecutor');
-
+const path = require('path')
+const fs = require('fs'
+)
 const CLI_NAME = "Angular Utils CLI"
 const CLI_VERSION = require('../package').version;
 
@@ -60,7 +62,8 @@ function cli (inputArgs, cb) {
         .command('dist', 'Make distributable packages')
         .option('project', {
             alias: 'p',
-            describe: 'The root project folder' 
+            describe: 'The root project folder' ,
+            default: './'
         })
         .option('all', {
             alias: 'a',
@@ -97,14 +100,19 @@ function cli (inputArgs, cb) {
         return new InfoCommand().execute(argv, cb);
     }
     else if (command === 'getVersion'){
-        return new GetVersionCommand().execute(argv, cb);
+        if (checkIsAngular(argv)){
+            return new GetVersionCommand().execute(argv, cb);
+        }
     }
     else if (command === 'updateVersion'){
-        return new UpdateProjectVersionCommand().execute(argv, cb);
+        if (checkIsAngular(argv)){
+            return new UpdateProjectVersionCommand().execute(argv, cb);
+        }
     }
     else if (command === 'build'){
-        return new BuildProjectsCommand().execute(argv, cb);
-        return;
+        if (checkIsAngular(argv)){
+            return new BuildProjectsCommand().execute(argv, cb);
+        }
     }
     else if (command === 'dist'){
         console.log(chalk.yellow.bold(command + " not yet implemented."));
@@ -158,5 +166,20 @@ function cli (inputArgs, cb) {
     }
     */
 
+}
+
+function checkIsAngular(args){
+    let projectRoot = (args.p ? args.p : args.project);
+    if (!isAngularProject(projectRoot)){
+        console.warn(chalk.bold("This does not seem to be a valid Angular project."));
+        return false;
+    }
+    return true;
+}
+
+function isAngularProject(prjPath) {
+    let packageJsonFile = path.join(prjPath, "package.json");
+    let ngPackageJsonFile = path.join(prjPath, "angular.json");
+    return (fs.existsSync(packageJsonFile) && fs.existsSync(ngPackageJsonFile));
 }
 

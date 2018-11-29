@@ -15,7 +15,7 @@ function GetVersionCommand(){
  * ngutils getVersion --semver patch --project ./                       -> display the next project version based on current and incremented in patch semver part
  */
 GetVersionCommand.prototype.execute = function(args, callback) {
-
+    
     let projectRoot = (args.p ? args.p : args.project);
     this.projectInfo = new ProjectInfo();
     this.projectInfo.loadInfo(projectRoot);

@@ -5,25 +5,25 @@
 Assuming you are into the project root folder:
 
 ```console
-ngutils getVersion  --project ./
+ngutils getVersion
 ```
 
 Example:
 ```terminal
-mrbook:wa-motif-open-api-module developer$ ngutils getVersion  --project ./
+mrbook:wa-motif-open-api-module developer$ ngutils getVersion
 1.2.3
 ```
 
 
 Simulating version increment with Semantic Versioning
 ```console
-ngutils getVersion --semver patch --project ./ 
+ngutils getVersion --semver patch
 ```
 
 Example:
 
 ```terminal
-mrbook:wa-motif-open-api-module developer$ ngutils getVersion --semver patch --project ./ 
+mrbook:wa-motif-open-api-module developer$ ngutils getVersion --semver patch
 1.2.4
 ```
 
@@ -40,20 +40,30 @@ You can apply the new version only to the root (main) project or to all subproje
 ### Update to a specified version
 
 ```console
-ngutils updateVersion --v '1.0.1' -p ./
+ngutils updateVersion --v '1.0.1'
 ```
 
 Update all projects including subprojects:
 
 ```console
-ngutils updateVersion --v '1.0.1' -a -p ./
+ngutils updateVersion --v '1.0.1' -a
 ```
 
 ### Update to an incremented semver version
 
 ```console
-ngutils updateVersion --semver patch -a -p ./
+ngutils updateVersion --semver patch -a
 ```
+
+### Force an 'invalid' Semantinc Version value
+
+```console
+ngutils updateVersion --v 'my-very-custom-ver' --force -a
+```
+
+## Build the Project
+
+**TODO!!**
 
 
 
@@ -66,7 +76,7 @@ White the **semver** option you can tell to auto-increment a version for the 'pa
 For example, assuming you have the current version of the project set to '1.0.3', if you run the command getVersion you get:
 
 ```terminal
-mrbook:wa-motif-open-api-module developer$ ngutils getVersion --project ./ 
+mrbook:wa-motif-open-api-module developer$ ngutils getVersion
 1.0.3
 mrbook:wa-motif-open-api-module developer$ 
 ```
@@ -74,13 +84,13 @@ mrbook:wa-motif-open-api-module developer$
 Then you can get the incremeneted version with the semver option:
 
 ```terminal
-mrbook:wa-motif-open-api-module developer$ ngutils getVersion --semver patch  --project ./ 
+mrbook:wa-motif-open-api-module developer$ ngutils getVersion --semver patch 
 1.0.4
 
-mrbook:wa-motif-open-api-module developer$ ngutils getVersion --semver minor  --project ./ 
+mrbook:wa-motif-open-api-module developer$ ngutils getVersion --semver minor
 1.1.0
 
-mrbook:wa-motif-open-api-module developer$ ngutils getVersion --semver major  --project ./ 
+mrbook:wa-motif-open-api-module developer$ ngutils getVersion --semver major
 2.0.0
 ```
 
