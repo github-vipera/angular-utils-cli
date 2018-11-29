@@ -14,6 +14,7 @@ var BuildProjectsCommand = require('./commands/BuildProjectsCommand');
 var GetVersionCommand = require("./commands/GetVersionCommand");
 var InfoCommand = require('./commands/InfoCommand');
 var BuildProjectsCommand = require('./commands/BuildProjectsCommand');
+var PackProjectsCommand = require('./commands/PackProjectsCommand')
 
 module.exports = function (inputArgs, cb) {
    
@@ -59,7 +60,7 @@ function cli (inputArgs, cb) {
         .command('getVersion', 'Get current Angular project version')
         .command('updateVersion', 'Update current Angular project version')
         .command('build', 'Build current Angular project')
-        .command('dist', 'Make distributable packages')
+        .command('pack', 'Make distributable packages')
         .option('project', {
             alias: 'p',
             describe: 'The root project folder' ,
@@ -80,6 +81,10 @@ function cli (inputArgs, cb) {
             alias: 'o',
             describe: 'The output folder' ,
             default: './output'
+        })
+        .option('dist', {
+            describe: 'The package distribution destination folder' ,
+            default: './package_dist'
         })
         .demandOption(['project'], 'Please provide the project path argument to work with this tool')
     .argv
@@ -114,9 +119,10 @@ function cli (inputArgs, cb) {
             return new BuildProjectsCommand().execute(argv, cb);
         }
     }
-    else if (command === 'dist'){
-        console.log(chalk.yellow.bold(command + " not yet implemented."));
-        return;
+    else if (command === 'pack'){
+        if (checkIsAngular(argv)){
+            return new PackProjectsCommand().execute(argv, cb);
+        }
     }
     else {
         console.log(chalk.red.bold("Unknown command '"+ command +"'. Type 'ngutils help' to see all options."));
