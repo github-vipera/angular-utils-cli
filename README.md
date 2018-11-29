@@ -63,9 +63,29 @@ ngutils updateVersion --v 'my-very-custom-ver' --force -a
 
 ## Build the Project
 
-**TODO!!**
+With the *build* command you can build the main project or all projects, alsi in '--prod' mode (Angular --prod switch).
 
+```console
+ngutils build 
+```
 
+or for a production build:
+
+```console
+ngutils build --prod
+```
+
+or to build all projects and subprojects:
+
+```console
+ngutils build -a
+```
+
+or for the production mode:
+
+```console
+ngutils build --prod -a
+```
 
 
 
