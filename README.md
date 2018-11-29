@@ -1,6 +1,6 @@
 # Angular Utils CLI
 
-### Get Current project Version
+## Get Current project Version
 
 Assuming you are into the project root folder:
 
@@ -27,7 +27,7 @@ mrbook:wa-motif-open-api-module developer$ ngutils getVersion --semver patch --p
 1.2.4
 ```
 
-### Update the current project version
+## Update the current project version
 
 To update your project version you can:
 
@@ -36,6 +36,27 @@ To update your project version you can:
 3. force any version string with *--force* option
 
 You can apply the new version only to the root (main) project or to all subprojects with the *--all* option.
+
+### Update to a specified version
+
+```console
+ngutils updateVersion --v '1.0.1' -p ./
+```
+
+Update all projects including subprojects:
+
+```console
+ngutils updateVersion --v '1.0.1' -a -p ./
+```
+
+### Update to an incremented semver version
+
+```console
+ngutils updateVersion --semver patch -a -p ./
+```
+
+
+
 
 
 
