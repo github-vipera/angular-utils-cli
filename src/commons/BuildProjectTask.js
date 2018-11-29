@@ -7,7 +7,7 @@ function BuildProjectTask(projectName, projectRoot, prod){
     this.projectRoot = projectRoot;
     this.prod = prod;
 
-    let cmd = "ng build";
+    let cmd = "ng build " + projectName;
     if (this.prod){
         cmd = cmd + " --prod";
     } 

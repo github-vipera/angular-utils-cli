@@ -18,7 +18,7 @@ CommandExecutor.prototype.create = function(cmd, cwd, logTag) {
         let out;
 
         if (this.logTag){
-          console.log(chalk.green(this.logTag));
+          console.log(chalk.green(this.logTag) + chalk.gray('.....Executing: ', this.cmd));
         } else {
           console.log(chalk.gray('Executing: ', this.cmd));
         }
