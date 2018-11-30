@@ -1,6 +1,14 @@
 # Angular Utils CLI
 
-## Get Current project Version
+White this Angular Utils you can:
+1. Check thee current project version
+2. Estimate the new project version
+3. Update all projects/subprojects with the same version
+4. Build all projects/subprojects
+5. Pack all projects/subprojects into a distro folder ready for the repo publishing
+
+
+## Get Current project version
 
 Assuming you are into the project root folder:
 
@@ -114,3 +122,17 @@ mrbook:wa-motif-open-api-module developer$ ngutils getVersion --semver major
 2.0.0
 ```
 
+## Creating packages
+To automatically create module packages you can use the *pack* command.
+
+```console
+ngutils pack -a 
+```
+
+With this command creates a folder named **package_dist** with all packages.
+
+You can also specify an alternative folder with the **dist** option:
+
+```console
+ngutils pack -a --dist ./my_packages 
+```
