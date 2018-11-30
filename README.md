@@ -8,6 +8,21 @@ White this Angular Utils you can:
 5. Pack all projects/subprojects into a distro folder ready for the repo publishing
 
 
+## Installation
+
+To install this CLI run in a terminal:
+
+(if you have a link to the Vipera NPM repository):
+```terminal
+npm install --save angular-utils-cli
+```
+
+(directly from Github repository):
+```terminal
+npm install -g git+https://git@github.com/github-vipera/angular-utils-cli.git
+```
+
+
 ## Get Current project version
 
 Assuming you are into the project root folder:
