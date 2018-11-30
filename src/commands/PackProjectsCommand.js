@@ -35,7 +35,8 @@ PackProjectsCommand.prototype.execute = function(args, callback) {
 
         console.log(chalk.bold.gray("Packing all project..."));
 
-        serialExec(tasks).then(console.log);
+        serialExec(tasks).then(
+        );
 
     } else {
 
