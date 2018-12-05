@@ -14,7 +14,7 @@ To install this CLI run in a terminal:
 
 (if you have a link to the Vipera NPM repository):
 ```terminal
-npm install --save angular-utils-cli
+npm install -g angular-utils-cli
 ```
 
 (directly from Github repository):
