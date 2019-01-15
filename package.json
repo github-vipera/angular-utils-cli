@@ -1,6 +1,6 @@
 {
   "name": "angular-utils-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Angular CLI Utils",
   "main": "index.js",
   "bin": {
