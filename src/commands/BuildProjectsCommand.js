@@ -23,15 +23,15 @@ BuildProjectsCommand.prototype.execute = function(args, callback) {
         let tasks = [];
         let subProjects = this.projectInfo.getSubProjects();
         for (let i=0;i<subProjects.length;i++){
-            let buildTask = new BuildProjectTask( subProjects[i].name, subProjects[i].path);
+            let buildTask = new BuildProjectTask( subProjects[i].name, subProjects[i].path, isProd);
             tasks.push(buildTask.getRunner());
         }
 
         //add the root project
-        let buildTask = new BuildProjectTask( "Root Project", this.projectInfo.getProjectRoot());
+        let buildTask = new BuildProjectTask( "Root Project", this.projectInfo.getProjectRoot(), isProd);
         tasks.push(buildTask.getRunner());
 
-        console.log(chalk.bold.gray("Building all project..."));
+        console.log(chalk.bold.gray("Building all projects..."));
 
         serialExec(tasks).then(
         );
@@ -40,7 +40,7 @@ BuildProjectsCommand.prototype.execute = function(args, callback) {
 
         console.log(chalk.bold.gray("Building main project..."));
 
-        let buildTask = new BuildProjectTask("Root Project", this.projectInfo.getProjectRoot());
+        let buildTask = new BuildProjectTask("Root Project", this.projectInfo.getProjectRoot(), isProd);
         buildTask.getRunner()().then(()=>{
             console.log(chalk.green("Main project built successfully."));
         }, (error)=>{
@@ -49,17 +49,6 @@ BuildProjectsCommand.prototype.execute = function(args, callback) {
 
     }
 
-}
-
-BuildProjectsCommand.prototype.buildProject = function(path, prod){
-
-    let cmd = "ng build";
-    if (prod){
-        cmd = cmd + " --prod";
-    } 
-    let runner = (new CommandExecutor).create(cmd);
-
-    return runner;
 }
 
 // export the class
